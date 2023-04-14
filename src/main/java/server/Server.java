@@ -90,9 +90,34 @@ public class Server {
      La méthode gère les exceptions si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux.
      @param arg la session pour laquelle on veut récupérer la liste des cours
      */
-    public void handleLoadCourses(String arg) {
-        // TODO: implémenter cette méthode
-    }
+           public void handleLoadCourses (String arg) {
+            ArrayList<Course> cours = new ArrayList<Course>();
+            try {
+                FileReader fr = new FileReader("./src/main/java/server/data/cours.txt");
+                BufferedReader reader = new BufferedReader(fr);
+                String coursData;
+                while ((coursData = reader.readLine()) != null) {
+                    String[] coursDataList = coursData.split("\t");
+                    if (coursDataList.length >= 3 && arg.equals(coursDataList[2])){
+                        String name = coursDataList[0];
+                        String code = coursDataList[1];
+                        String session = coursDataList[2];
+                        Course course = new Course(name,code,session);
+                        cours.add(course);
+                    }
+                }
+                reader.close();
+                objectOutputStream.writeObject(cours);
+                objectOutputStream.flush();
+
+            } catch(FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Le fichier cours.txt n'a pas été trouvé !");
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
 
     /**
      Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
