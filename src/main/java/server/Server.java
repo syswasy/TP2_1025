@@ -10,6 +10,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * La classe Server est une implémentation de serveur qui accepte les connexions des clients,
+ * interprète les commandes "INSCRIRE" "CHARGER" et exécute les méthodes.
+ */
 public class Server {
 
     public final static String REGISTER_COMMAND = "INSCRIRE";
@@ -35,6 +39,7 @@ public class Server {
             h.handle(cmd, arg);
         }
     }
+
 
     public void run() {
         while (true) {
