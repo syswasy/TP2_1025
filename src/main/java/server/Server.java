@@ -24,12 +24,22 @@ public class Server {
     private ObjectOutputStream objectOutputStream;
     private final ArrayList<EventHandler> handlers;
 
+    /**
+     * Ce constructeur déclare et initialise un serveur qui écoute sur le port et une liste d'objets EventHandler
+     * qui ajoute un gestionnaire d'événement.
+     * @param port Le port sur lequel le serveur doit écouter.
+     * @throws IOException Une exception si il y'a une erreur pour la création du serveur.
+     */
     public Server(int port) throws IOException {
         this.server = new ServerSocket(port, 1);
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
     }
 
+    /**
+     * La méthode addEventHandler rajoute l'argument h à la liste handlers.
+     * @param h est l'argument qui représente l'objet EeventHandler à rajouter.
+     */
     public void addEventHandler(EventHandler h) {
         this.handlers.add(h);
     }
