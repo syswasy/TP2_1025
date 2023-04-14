@@ -44,6 +44,11 @@ public class Server {
         this.handlers.add(h);
     }
 
+    /**
+     *
+     * @param cmd
+     * @param arg
+     */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
