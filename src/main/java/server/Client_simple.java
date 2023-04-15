@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Client {
+public class Client_simple {
     private final static String HOST = "localhost";
     private final static int PORT = 1337;
 
