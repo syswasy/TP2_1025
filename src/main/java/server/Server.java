@@ -147,6 +147,7 @@ public class Server {
      */
     public void handleRegistration() {
         // TODO: implémenter cette méthode
+        j git a
     }
 }
 
