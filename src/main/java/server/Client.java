@@ -20,19 +20,32 @@ public class Client {
         ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
-        String command = "";
+        int command = 0;
         String session = "";
         chargerCours(command, session, ous, ois);
 
         ous.close();
         ois.close();
         socket.close();
-        System.out.print("1. Consulter les cours offerts pour une autre session \n" +
-                "2. Inscription à un cours \n " +
-                "> Choix: ");
-        int choix = 0;
 
-        while (choix < 1 || choix > 2 ) {
+        while (true) {
+            System.out.println("1. Consulter les cours offerts pour une autre session \n" +
+                    "2. Inscription à un cours \n ");
+            System.out.println("Ou voulez-vous quitter?(répondre 'oui' pour sortir)");
+            String response = scanner.nextLine();
+            if (response.equals("oui")) {
+                System.out.println("Au revoir");
+                scanner.close();
+                break;
+            }
+            System.out.println("> Choix: ");
+            int choix = scanner.nextInt();
+
+            while (choix < 1 || choix > 2) {
+                System.out.println("Prenez un choix valide s'il vous plaît.");
+                System.out.print("> Choix: ");
+                choix = scanner.nextInt();
+            }
             if (choix == 1) {
                 Socket clientSocket = new Socket(HOST, PORT);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -56,24 +69,31 @@ public class Client {
                 clientSocket.close();
                 System.out.println("Client déconnecté!");
             }
+            scanner.nextLine();
         }
 
     }
 
-    public static void chargerCours(String command, String session, ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream) {
+    public static void chargerCours(int command, String session, ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream) {
         try {
             System.out.print("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:" +
                     "\n" + "1. Automne" + "\n" + "2. Hiver" + "\n" + "3. Ete" + "\n" + "> Choix: ");
             Scanner scanner = new Scanner(System.in);
-            command = scanner.nextLine();
-            if (command.equals("1")) {
+            command = scanner.nextInt();
+
+            while (command < 1 || command > 3){
+                System.out.println("Choix invalide. Veuillez choisir une session existante.");
+                System.out.print("> Choix: ");
+                command = scanner.nextInt();
+            }
+            if (command == 1) {
                 objectOutputStream.writeObject("CHARGER Automne");
                 session = "automne";
-            } else if (command.equals("2")) {
+            } else if (command == 2) {
                 objectOutputStream.writeObject("CHARGER Hiver");
                 session = "hiver";
 
-            } else if (command.equals("3")) {
+            } else if (command == 3) {
                 objectOutputStream.writeObject("CHARGER Ete");
                 session = "ete";
 
@@ -88,7 +108,6 @@ public class Client {
             for (Course course : courses) {
                 System.out.println(compteur + ". " + course.getName() + "\t" + "\t" + course.getCode());
                 compteur++;
-                scanner.close();
             }
         } catch (IOException e) {
 
@@ -97,6 +116,7 @@ public class Client {
     }
     public static void inscrire(ObjectOutputStream objectOutputStream){
         try {
+            objectOutputStream.writeObject("INSCRIRE");
             Scanner scanner = new Scanner(System.in);
             System.out.print("Veuillez saisir votre prénom: ");
             String prenom = scanner.nextLine();
@@ -118,6 +138,8 @@ public class Client {
             RegistrationForm form = new RegistrationForm(prenom, nom, email, matricule, course);
 
             objectOutputStream.writeObject(form);
+            System.out.println("Félicitations! L'inscription de " + prenom + " au cour " + courseCode +
+                    " a été réussi");
         }
         catch (IOException e){
 
