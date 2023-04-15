@@ -1,4 +1,4 @@
-package helloworld;
+package server;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

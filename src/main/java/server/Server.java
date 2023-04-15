@@ -146,8 +146,28 @@ public class Server {
      La méthode gére les exceptions si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-        // TODO: implémenter cette méthode
-        j git a
+        try {
+            RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
+            System.out.println(registrationForm.getPrenom());
+            FileWriter writer = new FileWriter("./src/main/java/server/data/inscription.txt", true);
+            writer.write(registrationForm.getCourse().getSession() + "\t" +
+                    registrationForm.getCourse().getCode() + "\t" +
+                    registrationForm.getMatricule() + "\t" +
+                    registrationForm.getCourse().getName() + "\t" +
+                    registrationForm.getPrenom() + "\t" +
+                    registrationForm.getNom() + "\t" +
+                    registrationForm.getEmail() + "\n");
+            writer.close();
+
+            // send confirmation message to client
+            objectOutputStream.writeObject("Registration successful!");
+
+        }
+        catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error handling registration: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 }
 
