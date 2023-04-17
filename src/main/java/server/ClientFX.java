@@ -21,7 +21,9 @@ import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
 import server.models.*;
 import java.io.*;
-import javafx.application.Application;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.property.SimpleStringProperty;
 
 
@@ -29,9 +31,6 @@ import javafx.beans.property.SimpleStringProperty;
 public class ClientFX extends Application {
     private final static String HOST = "localhost";
     private final static int PORT = 1337;
-    Client client = new Client();
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
     private String optionChoisi = "Hiver";
 
 
@@ -39,9 +38,7 @@ public class ClientFX extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        // Create buttons
-        Button button1 = new Button("Button 1");
-        Button button2 = new Button("Button 2");
+
         Button button3 = new Button("Button 3");
         Button button5 = new Button("Charger");
 
@@ -72,83 +69,12 @@ public class ClientFX extends Application {
 
         ObservableList<Course> courseList = FXCollections.observableArrayList();
 
+
         button5.setOnAction(event -> {
-            switch (optionChoisi) {
-                case "Hiver":
-                    courseList.clear();
-                    try {
-                    FileReader fr = new FileReader("./src/main/java/server/data/cours.txt");
-                    BufferedReader reader = new BufferedReader(fr);
-                    String coursData;
-                    while ((coursData = reader.readLine()) != null) {
-                        String[] coursDataList = coursData.split("\t");
-                        if (coursDataList.length >= 3 && "Hiver".equals(coursDataList[2])) {
-                            String name = coursDataList[0];
-                            String code = coursDataList[1];
-                            String session = coursDataList[2];
-                            Course course = new Course(code, name,session);
-                            courseList.add(course);
-                        }
-                    }
-                    reader.close();
-                    } catch(FileNotFoundException e) {
-                        e.printStackTrace();
-                        System.out.println("Le fichier cours.txt n'a pas été trouvé !");
-                    } catch (IOException e){
-                        e.printStackTrace();
-                    }
-                            break;
-                            case "Automne":
-                                courseList.clear();
-                                try {
-                                    FileReader fr = new FileReader("./src/main/java/server/data/cours.txt");
-                                    BufferedReader reader = new BufferedReader(fr);
-                                    String coursData;
-                                    while ((coursData = reader.readLine()) != null) {
-                                        String[] coursDataList = coursData.split("\t");
-                                        if (coursDataList.length >= 3 && "Automne".equals(coursDataList[2])) {
-                                            String name = coursDataList[0];
-                                            String code = coursDataList[1];
-                                            String session = coursDataList[2];
-                                            Course course = new Course(code, name,session);
-                                            courseList.add(course);
-                                        }
-                                    }
-                                    reader.close();
-                                } catch(FileNotFoundException e) {
-                                    e.printStackTrace();
-                                    System.out.println("Le fichier cours.txt n'a pas été trouvé !");
-                                } catch (IOException e){
-                                    e.printStackTrace();
-                                }
-                                break;
-                            case "Ete":
-                                courseList.clear();
-                                try {
-                                    FileReader fr = new FileReader("./src/main/java/server/data/cours.txt");
-                                    BufferedReader reader = new BufferedReader(fr);
-                                    String coursData;
-                                    while ((coursData = reader.readLine()) != null) {
-                                        String[] coursDataList = coursData.split("\t");
-                                        if (coursDataList.length >= 3 && "Ete".equals(coursDataList[2])) {
-                                            String name = coursDataList[0];
-                                            String code = coursDataList[1];
-                                            String session = coursDataList[2];
-                                            Course course = new Course(code, name,session);
-                                            courseList.add(course);
-                                        }
-                                    }
-                                    reader.close();
-                                } catch(FileNotFoundException e) {
-                                    e.printStackTrace();
-                                    System.out.println("Le fichier cours.txt n'a pas été trouvé !");
-                                } catch (IOException e){
-                                    e.printStackTrace();
-                                }
-                                break;
-                        }
-
-
+            courseList.clear();
+            String session = optionChoisi;
+            List<Course> filteredCourses = filterParSession(session);
+            courseList.addAll(filteredCourses);
         });
 
 
@@ -212,6 +138,30 @@ public class ClientFX extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Inscription UdeM");
         primaryStage.show();
+    }
+    private List<Course> filterParSession(String session) {
+        List<Course> filtrer = new ArrayList<Course>();
+        try {
+            FileReader fr = new FileReader("./src/main/java/server/data/cours.txt");
+            BufferedReader reader = new BufferedReader(fr);
+            String coursData;
+            while ((coursData = reader.readLine()) != null) {
+                String[] coursDataList = coursData.split("\t");
+                if (coursDataList.length >= 3 && session.equals(coursDataList[2])) {
+                    String name = coursDataList[0];
+                    String code = coursDataList[1];
+                    Course course = new Course(code, name, session);
+                    filtrer.add(course);
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Le fichier cours.txt n'a pas été trouvé !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return filtrer;
     }
 
     public static void main(String[] args) {
