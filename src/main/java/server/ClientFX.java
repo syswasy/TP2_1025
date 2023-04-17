@@ -4,8 +4,7 @@ package server;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -21,16 +20,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
-import java.awt.*;
-import javafx.scene.control.MenuItem;
 import server.models.*;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
@@ -79,30 +73,24 @@ public class ClientFX extends Application {
         hbox3.setPadding(new Insets(30, 0 , 30  , 30));
 
         // Liste de cours
-        TableView tableView = new TableView();
+
+        TableView<Server> tableView = new TableView<>();
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn< Server,  String> column1 =
-                new TableColumn<>("Code");
+        TableColumn<Server, String> column1 = new TableColumn<>("Code");
+        column1.setCellValueFactory(new PropertyValueFactory<>("code"));
 
-        column1.setCellValueFactory(
-                new PropertyValueFactory<>("code"));
-
-
-        TableColumn<Server, String> column2 =
-                new TableColumn<>("Cours");
-
-        column2.setCellValueFactory(
-                new PropertyValueFactory<>("cours"));
+        TableColumn<Server, String> column2 = new TableColumn<>("Cours");
+        column2.setCellValueFactory(new PropertyValueFactory<>("cours"));
         tableView.getColumns().add(column1);
         tableView.getColumns().add(column2);
-
-        VBox vbox3 = new VBox(30);
         Label label = new Label("Liste des cours");
-        vbox3.getChildren().addAll(label,tableView);
-        vbox3.setSpacing(10);
+        label.setStyle("-fx-font-weight: bold;");
+        label.setAlignment(Pos.CENTER);
+        VBox vbox3 = new VBox(10);
+        vbox3.getChildren().add(label);
+        vbox3.getChildren().add(tableView);
         vbox3.setPadding(new Insets(30, 30 , 0  , 30));
-
 
 
 
