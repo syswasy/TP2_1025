@@ -115,7 +115,7 @@ public class ClientFX extends Application {
         VBox vbox1 = new VBox();
         vbox1.getChildren().addAll(vbox3, hbox3);
         vbox1.setSpacing(10);
-        vbox1.setBackground(new Background(new BackgroundFill(Color.rgb(225,198,153), CornerRadii.EMPTY,
+        vbox1.setBackground(new Background(new BackgroundFill(Color.rgb(0,0,255), CornerRadii.EMPTY,
                 Insets.EMPTY)));
 
         // Set alignment for VBox 1
@@ -207,7 +207,7 @@ public class ClientFX extends Application {
 
         // Align vbox2 to the top left corner of hbox2
         vbox2.setAlignment(Pos.TOP_LEFT);
-        vbox2.setBackground(new Background(new BackgroundFill(Color.rgb(238,229,255), CornerRadii.EMPTY,
+        vbox2.setBackground(new Background(new BackgroundFill(Color.rgb(0,0,255), CornerRadii.EMPTY,
                 Insets.EMPTY)));
 
         // Create HBox for buttons 1, 2, and 3
