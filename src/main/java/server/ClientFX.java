@@ -27,7 +27,6 @@ import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 
 
-
 public class ClientFX extends Application {
     private final static String HOST = "localhost";
     private final static int PORT = 1337;
