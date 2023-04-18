@@ -31,6 +31,8 @@ public class ClientFX extends Application {
     private final static String HOST = "localhost";
     private final static int PORT = 1337;
     private String optionChoisi = "Hiver";
+    private ObservableList<Course> courseList = FXCollections.observableArrayList();
+
 
 
 
@@ -38,38 +40,43 @@ public class ClientFX extends Application {
     public void start(Stage primaryStage) throws IOException {
 
 
-        Button button3 = new Button("Button 3");
-        Button button5 = new Button("Charger");
+        Button bouton3 = new Button("Button 3");
+        Button bouton5 = new Button("Charger");
 
-        // Create SplitMenuButton for button 4 with three options
-        SplitMenuButton button4 = new SplitMenuButton();
-        button4.setText("Hiver");
+        /**
+         * Création d'un bouton splitMenu pour le bouton 4, contenant la session d'hiver, d'automne et d'été.
+         */
+        SplitMenuButton bouton4 = new SplitMenuButton();
+        bouton4.setText("Hiver");
         MenuItem option1 = new MenuItem("Hiver");
         MenuItem option2 = new MenuItem("Automne");
         MenuItem option3 = new MenuItem("Ete");
-        button4.getItems().addAll(option1, option2, option3);
+        bouton4.getItems().addAll(option1, option2, option3);
 
 
-
+        /**
+         * Changer la variable optionChoisi selon la session sélectionner .
+         */
         option1.setOnAction(event -> {
-            button4.setText("Hiver");
+            bouton4.setText("Hiver");
             optionChoisi = "Hiver";
         });
 
         option2.setOnAction(event -> {
-            button4.setText("Automne");
+            bouton4.setText("Automne");
             optionChoisi = "Automne";
         });
 
         option3.setOnAction(event -> {
-            button4.setText("Ete");
+            bouton4.setText("Ete");
             optionChoisi = "Ete";
         });
 
-        ObservableList<Course> courseList = FXCollections.observableArrayList();
 
-
-        button5.setOnAction(event -> {
+        /**
+         * Utiliser la methode filtrerParSession pour obtenir le code et nom des cours à la session choisie.
+         */
+        bouton5.setOnAction(event -> {
             courseList.clear();
             String session = optionChoisi;
             List<Course> filteredCourses = filterParSession(session);
@@ -77,13 +84,16 @@ public class ClientFX extends Application {
         });
 
 
-
-        // Hbox for button 4 and 5
+        /**
+         * Hbox pour le bouton 4 et 5
+         */
         HBox hbox3 = new HBox(30);
-        hbox3.getChildren().addAll(button4, button5);
+        hbox3.getChildren().addAll(bouton4, bouton5);
         hbox3.setPadding(new Insets(30, 0 , 30  , 30));
 
-        // Liste de cours
+        /**
+         * Liste de cours
+         */
 
         TableView<Course> tableView = new TableView<>();
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -101,37 +111,29 @@ public class ClientFX extends Application {
         Label label = new Label("Liste des cours");
         label.setStyle("-fx-font-weight: bold;");
         label.setAlignment(Pos.CENTER);
-        VBox vbox3 = new VBox(10);
-        vbox3.getChildren().add(label);
-        vbox3.getChildren().add(tableView);
-        vbox3.setPadding(new Insets(30, 30 , 0  , 30));
+        VBox tableau = new VBox(10);
+        tableau.getChildren().add(label);
+        tableau.getChildren().add(tableView);
+        tableau.setPadding(new Insets(30, 30 , 0  , 30));
 
 
-
-
-        // Create VBox for buttons 1 and 2
-        VBox vbox1 = new VBox();
-        vbox1.getChildren().addAll(vbox3, hbox3);
-        vbox1.setSpacing(10);
-        vbox1.setBackground(new Background(new BackgroundFill(Color.rgb(225,198,153), CornerRadii.EMPTY,
+        /**
+         * Vbox pour la partie chargement de cours.
+         */
+        VBox chargerCours = new VBox();
+        chargerCours.getChildren().addAll(tableau, hbox3);
+        chargerCours.setSpacing(10);
+        chargerCours.setBackground(new Background(new BackgroundFill(Color.rgb(225,198,153), CornerRadii.EMPTY,
                 Insets.EMPTY)));
+        chargerCours.setAlignment(Pos.TOP_LEFT);
 
-        // Set alignment for VBox 1
-        vbox1.setAlignment(Pos.TOP_LEFT);
 
-        // Create HBox for buttons 1, 2, and 3
         HBox hbox2 = new HBox();
-        hbox2.getChildren().addAll(vbox1, button3);
+        hbox2.getChildren().addAll(chargerCours, bouton3);
         hbox2.setSpacing(10);
-
-        // Set alignment for HBox 2
         hbox2.setAlignment(Pos.TOP_LEFT);
-
-        // Set border for HBox 2
         hbox2.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        // Set the HBox 2 as the root of the scene
         Scene scene = new Scene(hbox2, 300, 200);
 
         primaryStage.setScene(scene);
