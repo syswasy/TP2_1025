@@ -46,9 +46,10 @@ public class Server {
     }
 
     /**
-     *
-     * @param cmd
-     * @param arg
+     *Cette méthode alerte tous les gestionnaires d'événements (EventHandlers) en invoquant leur méthode "handle"
+     *  avec les valeurs de "cmd" et "arg".
+     * @param cmd  La commande à passer aux gestionnaires d'événements.
+     * @param arg L'argument à passer aux gestionnaires d'événements.
      */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
@@ -56,7 +57,11 @@ public class Server {
         }
     }
 
-
+    /**
+     * Cette méthode gère l'exécution du processus de serveur pour accepter les connexions de clients,
+     * gérer les échanges de données et les déconnexions. La méthode tourne en boucle indéfiniment,
+     * ce qui signifie qu'elle reste active tant que le serveur est en cours d'exécution.
+     */
     public void run() {
         while (true) {
             try {
@@ -73,6 +78,13 @@ public class Server {
         }
     }
 
+    /**
+     *Cette méthode écoute les données entrantes du client, les traite en extrayant la commande et l'argument,
+     * puis les transmet aux gestionnaires d'événements appropriés. Elle gère les exceptions liées à la lecture des données
+     * et à la désérialisation des objets. La methode est appelée en boucle dans la méthode 'run()' du serveur.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
@@ -83,6 +95,13 @@ public class Server {
         }
     }
 
+    /**
+     *Cette méthode traite une ligne de commande provenant du client en la divisant en parties séparer :
+     * la commande et les arguments. Elle renvoie ces parties sous forme de paire. Cette méthode est utilisée
+     * pour analyser les commandes envoyées par le client au serveur.
+     * @param line la ligne de commande à traiter.
+     * @return La paire contenant la commande et les arguments.
+     */
     public Pair<String, String> processCommandLine(String line) {
         String[] parts = line.split(" ");
         String cmd = parts[0];
@@ -90,12 +109,23 @@ public class Server {
         return new Pair<>(cmd, args);
     }
 
+    /**
+     * Cette méthode gère la déconnexion d'un client en fermant les flux de données d'entrée et de sortie
+     * et la connexion client. Elle est appelée lorsque la communication avec un client est terminée.
+     * @throws IOException
+     */
     public void disconnect() throws IOException {
         objectOutputStream.close();
         objectInputStream.close();
         client.close();
     }
 
+    /**
+     * Cette méthode gère les événements en fonction de la commande et des arguments fournis. Elle appelle la
+     * méthode handleRegistration() et la méthode handleLoadCourses(arg) selon la commande.
+     * @param cmd la commande a traité
+     * @param arg les arguments associés à la commande.
+     */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
