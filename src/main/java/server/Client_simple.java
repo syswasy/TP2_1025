@@ -1,4 +1,6 @@
 package server;
+import javafx.geometry.Pos;
+import javafx.scene.layout.VBox;
 import server.models.*;
 
 import java.io.*;
@@ -73,6 +75,7 @@ public class Client_simple {
         }
 
     }
+
 
     public static void chargerCours(int command, String session, ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream) {
         try {
